@@ -1,19 +1,21 @@
-import {TextInput, Text, View, StyleSheet} from "react-native"
-import {Colors} from "../../constants/colors";
+import {TextInput, Text, View, StyleSheet, useColorScheme} from "react-native"
+import Colors from "../../constants/colors";
 export default function MyInput({
 
     label,
     value,
-    onchangeText,
+    onChangeText,
     secureTextEntry
 }){
+
+    const theme= useColorScheme();
     return (
-        <View  style= {styles.container}>
+        <View  style= {[styles.container, styles[theme]]}>
             <TextInput
             placeholder={label}
             style={styles.input}
             value={value}
-            onchangeText ={onchangeText}
+            onChangeText ={onChangeText}
             secureTextEntry={secureTextEntry}
             />
 
@@ -25,14 +27,27 @@ export default function MyInput({
 const styles = StyleSheet.create({
 
     container:{
-        width: "90%",
+        width: "100%",
         height:45,
         justifyContent:"center",
         margin:10,
         padding:10,
         backgroundColor:Colors.light,
-        borderRadius:1,
+        borderRadius:8,
         borderWidth:1,
-        borderColor:Colors.primary
+    },
+    dark:{
+        backgroundColor: Colors.dark.text + "06",
+        borderColor: Colors.dark.text + "60"
+    },
+    light:{
+        backgroundColor:Colors.light.text + "06",
+        borderColor: Colors.light.text + "60"
+    },
+    input:{
+        color:"gray",
+        fontSize:17,
     }
+        
+    
 })

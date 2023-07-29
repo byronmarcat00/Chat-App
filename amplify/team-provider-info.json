@@ -14,6 +14,9 @@
     "categories": {
       "auth": {
         "chatapp47ab02ad": {}
+      },
+      "api": {
+        "chatapp": {}
       }
     }
   }
