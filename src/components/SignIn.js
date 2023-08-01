@@ -30,7 +30,7 @@ export default function SignIn() {
       </Pressable>
 
       <MyButton title={isLoading ? "loading..." : "Sign In"} 
-      disable ={isLoading ? true: false}
+      disabled ={isLoading ? true: false}
       onPress={handleSignIn} 
       style={{marginTop:20}}
       />

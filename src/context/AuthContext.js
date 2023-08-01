@@ -11,9 +11,20 @@ setPassword: () => {},
 setVerificationCode: () => {},
 verificationCode: "",
 isLoading: false,
+firstName:"",
+setFirstName:() =>{},
+setLastName:() =>{},
+lastName:"",
+setLastName:() =>{},
+confirmPassword:"",
+setConfirmPassword:() => {},
 handleSignIn: () => {},
 handleSignUp: () => {},
 handleConfirmSignUp: () => {},
+handleForgotPassword:() =>{},
+handleResendVerificationCode:() =>{}
+
+
 });
 
 const { Provider } = AuthContext;
@@ -24,6 +35,9 @@ const [email, setEmail] = React.useState("");
 const [password, setPassword] = React.useState("");
 const [verificationCode, setVerificationCode] = React.useState("");
 const [isLoading, setIsLoading] = React.useState(false);
+const [firstName, setFirstName] = React.useState("");
+const [lastName, setLastName] = React.useState("");
+const [confirmPassword, setConfirmPassword] = React.useState("");
 
 async function handleSignIn() {
   if (!email || !password) {
@@ -36,6 +50,7 @@ async function handleSignIn() {
       username: email,
       password,
     });
+    setIsLoading(false);
     console.log("user", user);
     setAuthState("signedIn");
   } catch (error) {
@@ -50,11 +65,23 @@ async function handleSignUp() {
     alert("Please enter an email and password");
     return;
   }
+  if(password !== confirmPassword){
+    alert("Passwords do not match");
+    return ; 
+  }
+
+
   try {
     setIsLoading(true);
     await Auth.signUp({
       username: email,
       password,
+
+      attributes:{
+        given_name:firstName,
+        family_name:lastName,
+      }
+
     });
     setAuthState("confirmSignUp");
     setIsLoading(false);
@@ -83,6 +110,60 @@ async function handleConfirmSignUp() {
   }
 }
 
+async function handleForgotPassword(){
+  if(!email){
+    alert("Please enter and email");
+    return;
+  }
+  try {
+
+    setIsLoading(true);
+    await Auth.forgotPassword(email);
+    setAuthState("confirmForgotPassword");
+    setIsLoading(false);
+  }
+  catch(e){
+    alert(e.message);
+    setIsLoading(false);
+  }
+
+}
+async function handleResetPassword(){
+
+  if (!verificationCode || verificationCode.length !== 6){
+    alert("Please enter a valid verification code");
+    return;
+  }
+  if (password !== confirmPassword){
+    alert("Passwords do not match");
+    return;
+  }
+  try {
+    setIsLoading(true);
+    await Auth.forgotPasswordSubmit(email, verificationCode, password);
+    alert("Password reset successfully, Now you can Sign in");
+    setAuthState("signIn");
+    setIsLoading(false)
+  }
+  catch(e){
+    alert(e.message);
+    setIsLoading(false);
+  }
+
+
+}
+
+async function handleResendVerificationCode(){
+
+  try{
+    await Auth.resendSignUp(email);
+    alert(`Successfully resent confirmation code to ${email}`);
+  }
+  catch (e){
+    alert(e);
+  }
+}
+
 return (
   <Provider
     value={{
@@ -98,6 +179,15 @@ return (
       verificationCode,
       setVerificationCode,
       isLoading,
+      firstName,
+      setFirstName,
+      lastName,
+      setLastName,
+      confirmPassword,
+      setConfirmPassword,
+      handleForgotPassword,
+      handleResendVerificationCode,
+      handleResetPassword,
     }}
   >
     {children}
