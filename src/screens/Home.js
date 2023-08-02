@@ -1,16 +1,30 @@
 import * as React from "react";
 import MyText from "../components/MyText";
-import MyButton from "../components/MyButton";
-import { Auth } from "aws-amplify";
-import ListTodos from "../components/ListTodos";
-
+import { useNavigation } from "@react-navigation/native";
+import { View } from "../components/themed/Themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
+
+  const navigation = useNavigation();
+
+
+  React.useEffect(() => {
+    async function checkFirstLaunch(){
+
+      const firstLaunch = await AsyncStorage.getItem("@firstLaunch");
+      if(firstLaunch === null) navigation.navigate('Onboarding')
+    }
+
+    checkFirstLaunch();
+  
+  },[])  
   
 
   return (
     <React.Fragment>
-<ListTodos/>
+      <MyText type="title" >Home</MyText>
+
     </React.Fragment>
   );
 }
