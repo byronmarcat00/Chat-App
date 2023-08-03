@@ -1,21 +1,12 @@
+import { Auth } from "aws-amplify";
 import * as React from "react";
 import MyText from "../components/MyText";
 import MyButton from "../components/MyButton";
-import { Auth } from "aws-amplify";
 import { View } from "../components/themed/Themed";
-export default function Profile() {
-  const [user, setUser] = React.useState(null);
+import { useSelector } from "react-redux";
 
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const { attributes } = await Auth.currentAuthenticatedUser();
-        setUser(attributes);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []);
+export default function Profile() {
+  const user = useSelector((state) => state.user);
 
   async function handleSignOut() {
     try {
@@ -27,10 +18,13 @@ export default function Profile() {
   }
 
   return (
-    <View style = {{flex:1}}>
+    <View style={{ flex: 1 }}>
       <MyText type="title">Welcome back! 🚀</MyText>
-      <MyText>{user?.sub}</MyText>
-      <MyText>{user?.email}</MyText>
+      <MyText>{user.id}</MyText>
+      <MyText>{user.email}</MyText>
+      <MyText>{user.firstName}</MyText>
+ 
+      <MyText>{user.lastName}</MyText>
       <MyButton title={"Sign Out"} onPress={handleSignOut} />
     </View>
   );
