@@ -4,13 +4,9 @@ import MyText from "../components/MyText";
 import { useSelector, useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { CLOUD_NAME, UPLOAD_PRESET } from "@env";
+import { updateUserPicture } from "../utils/userOperations";
 
-import { API } from "aws-amplify";
-import { updateUser } from "../graphql/mutations";
 import { resetProfilePicture } from "../features/user";
-
-console.log( UPLOAD_PRESET )
-
 
 
 function ProfileFallback({ firstName }) {
@@ -77,7 +73,7 @@ export default function ProfilePicture() {
       const json = await response.json();
       console.log("Cloudinary response:", json); // Log the response for debugging
       // save to db
-      updateUserPicture(json.url);
+      await updateUserPicture(id, json.url);
       // set image to redux
       dispatch(resetProfilePicture(json.url));
       console.log("image save to db and cloudinary", json.url);
@@ -87,21 +83,21 @@ export default function ProfilePicture() {
   };
   
 
-  const updateUserPicture = async (newPhoto) => {
-    try {
-      await API.graphql({
-        query: updateUser,
-        variables: {
-          input: {
-            id: id,
-            profilePicture: newPhoto,
-          },
-        },
-      });
-    } catch (e) {
-      console.log("error updating user photo");
-    }
-  };
+  // const updateUserPicture = async (newPhoto) => {
+  //   try {
+  //     await API.graphql({
+  //       query: updateUser,
+  //       variables: {
+  //         input: {
+  //           id: id,
+  //           profilePicture: newPhoto,
+  //         },
+  //       },
+  //     });
+  //   } catch (e) {
+  //     console.log("error updating user photo");
+  //   }
+  // };
 
   return (
     <View style={styles.container}>

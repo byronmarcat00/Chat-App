@@ -28,19 +28,40 @@ const userSlice = createSlice({
         notificationToken: null,
       });
     },
-    resetProfilePicture:(state, action) => {
-
+    resetProfilePicture: (state, action) => {
       return {
-
         ...state,
-        profilePicture:action.payload,
-
-      }
-
-    }
-
+        profilePicture: action.payload,
+      };
+    },
+    resetFirstName: (state, action) => {
+      return {
+        ...state,
+        firstName: action.payload,
+      };
+    },
+    resetlastName: (state, action) => {
+      return {
+        ...state,
+        lastName: action.payload,
+      };
+    },
+    resetStatus: (state, action) => {
+      return {
+        ...state,
+        status: action.payload,
+      };
+    },
   },
 });
 
-export const { setUser, resetUser, resetProfilePicture } = userSlice.actions;
+export const {
+  setUser,
+  resetUser,
+  resetProfilePicture,
+  resetFirstName,
+  resetStatus,
+  resetlastName,
+} = userSlice.actions;
 export default userSlice.reducer;
+
