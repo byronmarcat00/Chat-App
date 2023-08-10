@@ -9,20 +9,15 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 import { setUser, resetUser } from "./src/features/user";
 import { store } from "./src/app/store";
 import { getUser } from "./src/graphql/queries";
-import {setNotificationhandler} from "expo-notifications"
+import { setNotificationHandler } from "expo-notifications";
 
-
-
-setNotificationhandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    };
-  },
+setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
 });
-
 
 Amplify.configure(awsconfig);
 
@@ -60,7 +55,7 @@ function App() {
         );
         // console.log("lisener", data.payload);
         // setUser({ sub: data.payload.email, email: data.payload.email });
-        console.log("user signed in from Hub");
+        console.log("user signed in");
         break;
       case "signOut":
         // setUser(null);
@@ -72,9 +67,9 @@ function App() {
     }
   };
 
-  
+  React.useEffect(() => {
     Hub.listen("auth", listener);
-
+  }, []);
 
   if (isLoading) return <Splash setIsLoading={setIsLoading} />;
   return user.email ? (
