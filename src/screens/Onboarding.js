@@ -9,7 +9,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { resetNotificationToken } from "../features/user";
 import { registerForPushNotificationsAsync } from "../utils/registerForPushNotificationsAsync";
 import { updateUserNotificationToken } from "../utils/userOperations";
-n
+
 export default function Onboarding() {
 
   const {id} = useSelector(state => state.user)
