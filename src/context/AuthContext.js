@@ -168,6 +168,8 @@ function AuthProvider({ children }) {
       email: attributes.email.toLowerCase(),
       status: null,
       notificationToken: null,
+      latitude:null,
+      longitud:null,
     };
     try {
       const userFromDB = await API.graphql(

@@ -9,6 +9,20 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 import { setUser, resetUser } from "./src/features/user";
 import { store } from "./src/app/store";
 import { getUser } from "./src/graphql/queries";
+import {setNotificationhandler} from "expo-notifications"
+
+
+
+setNotificationhandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    };
+  },
+});
+
 
 Amplify.configure(awsconfig);
 
