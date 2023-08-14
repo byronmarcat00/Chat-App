@@ -12,7 +12,8 @@ export const postSlice = createSlice({
             state.posts =action.payload;
         },
         addPostReducer:(state,action) => {
-            state.posts =state.posts.unshift(action.payload);
+            //state.posts =state.posts.unshift(action.payload);
+            state.posts =[action.payload,...state.posts]
         },
         deletePostReducer:(state,action) => {
             const idPostToDelete=action.payload;
@@ -25,7 +26,7 @@ export const postSlice = createSlice({
             const {userID, postID} = action.payload;
             state.posts = state.posts.map(post =>{
                 if(post.id === postID){
-                    post.numberOfLikes =+1;
+                    post.numberOfLikes +=1;
                     post.likedBy.push(userID);
                 }
                 return post;
@@ -35,8 +36,8 @@ export const postSlice = createSlice({
             const {userID, postID} = action.payload;
             state.posts = state.posts.map(post =>{
                 if(post.id === postID){
-                    post.numberOfLikes =-1;
-                    post.likedBy.push(userID);
+                    post.numberOfLikes -=1;
+                    post.likedBy = post.likedBy.filter(id => id !== userID)
                 }
                 return post;
             })
